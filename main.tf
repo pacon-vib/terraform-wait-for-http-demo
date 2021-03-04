@@ -9,7 +9,7 @@ variable "test_url" {
 }
 
 data "external" "wait" {
-  program = ["./wait_for_url", var.test_url]
+  program = ["./wait_for_url.sh", var.test_url]
 
   query = {
     //url = var.test_url
@@ -18,6 +18,10 @@ data "external" "wait" {
   depends_on = [
     null_resource.a
   ]
+}
+
+output "waited_url" {
+  value = data.external.wait.result.url
 }
 
 resource "null_resource" "b" {
@@ -29,3 +33,4 @@ resource "null_resource" "b" {
     data.external.wait
   ]
 }
+
